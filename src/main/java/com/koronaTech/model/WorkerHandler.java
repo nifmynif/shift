@@ -3,9 +3,9 @@ package com.koronaTech.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
@@ -52,6 +52,58 @@ public class WorkerHandler<C extends Worker> {
                 .sorted(order ? Comparator.comparing(Worker::getSalary)
                         : Comparator.comparing(Worker::getSalary).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public String getReport() {
+        List<C> workersTemp = new ArrayList<>(workers);
+        List<C> errorWorkers = workersTemp.stream()
+                .filter(worker -> worker.getSalary() < 0)
+                .toList();
+        workersTemp = workersTemp.stream()
+                .filter(worker -> worker.getSalary() >= 0)
+                .collect(Collectors.toList());
+        Map<String, WorkerHandler<C>> departmentMap = new HashMap<>();
+        List<String> departments = workersTemp.stream()
+                .filter(worker -> worker instanceof Manager)
+                .map(Worker::getDepartment)
+                .distinct().sorted().toList();
+        for (String department : departments)
+            departmentMap.put(department, getWorkersOfDepartment(workersTemp, department));
+        StringBuilder sb = new StringBuilder();
+        departmentMap.forEach((k, v) -> sb.append(k).append("\n").append(v).append(v.getDepartmentStatistic()).append("\n"));
+        sb.append("Некорректные данные:").append("\n");
+        workersTemp.forEach(sb::append);
+        errorWorkers.forEach(sb::append);
+        return sb.toString();
+    }
+
+    private String getDepartmentStatistic() {
+        return size() + ", " + getAverageSalary();
+    }
+
+    private String getAverageSalary() {
+        double average = workers.stream()
+                .map(Worker::getSalary)
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(0.0);
+        return BigDecimal.valueOf(average)
+                .setScale(2, RoundingMode.CEILING).toString();
+    }
+
+    private WorkerHandler<C> getWorkersOfDepartment(List<C> workersTemp, String departmentName) {
+        WorkerHandler<C> department = new WorkerHandler<>();
+        List<C> managers = workersTemp.stream()
+                .filter(w -> w.getDepartment().equals(departmentName))
+                .toList();
+        List<C> employers = workersTemp.stream()
+                .filter(w -> managers.stream().anyMatch(m -> w.getDepartment().equals(String.valueOf(m.getId()))))
+                .toList();
+        workersTemp.removeAll(managers);
+        workersTemp.removeAll(employers);
+        department.addWorkers(managers);
+        department.addWorkers(employers);
+        return department;
     }
 
     @Override
