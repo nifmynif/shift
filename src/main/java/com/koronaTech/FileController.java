@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.logging.*;
@@ -43,9 +44,10 @@ public class FileController {
         }
     }
 
-    public static WorkerHandler<Worker> readFile(String url) {
+    public static WorkerHandler<Worker> readFile(String flePath) throws IOException, IllegalArgumentException {
         WorkerHandler<Worker> workerHandler = new WorkerHandler<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(url))) {
+        checkFile(flePath);
+        try (BufferedReader reader = new BufferedReader(new FileReader(flePath))) {
             String line;
             while ((line = reader.readLine()) != null)
                 try {
@@ -53,9 +55,6 @@ public class FileController {
                 } catch (IllegalArgumentException e) {
                     logger.warning(e.toString());
                 }
-
-        } catch (IOException e) {
-            logger.severe(e.getMessage());
         }
         return workerHandler;
     }
@@ -86,5 +85,16 @@ public class FileController {
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException("Недостаточно информации для " + Arrays.toString(parts));
         }
+    }
+
+    private static void checkFile(String filePath) {
+        if (!filePath.endsWith(".txt"))
+            throw new IllegalArgumentException("Неверный формат файла");
+    }
+
+    public static void writeFile(String data, String filePath) throws IOException, IllegalArgumentException {
+        checkFile(filePath);
+        Files.write(Path.of(filePath), data.getBytes());
+        logger.info("Запись успешно завершена");
     }
 }
