@@ -1,4 +1,4 @@
-package com.koronaTech;
+package com.koronaTech.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
