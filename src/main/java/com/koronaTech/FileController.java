@@ -9,10 +9,39 @@ import lombok.experimental.UtilityClass;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.logging.*;
 
 @UtilityClass
 public class FileController {
+    public static final Logger logger = Logger.getLogger(FileController.class.getName());
+
+    static {
+        relog();
+    }
+
+    public static void relog() {
+        try {
+            for (Handler handler : logger.getHandlers()) {
+                handler.close();
+                logger.removeHandler(handler);
+            }
+
+            Files.deleteIfExists(Paths.get("Log.log"));
+
+            FileHandler fileHandler = new FileHandler("Log.log", false);
+            fileHandler.setFormatter(new SimpleFormatter());
+
+            logger.addHandler(fileHandler);
+            logger.setLevel(Level.FINE);
+
+            logger.info("Лог-файл был очищен и переинициализирован.");
+        } catch (Exception e) {
+            logger.severe("Произошла ошибка при конфигурации логгера " + e);
+        }
+    }
 
     public static WorkerHandler<Worker> readFile(String url) {
         WorkerHandler<Worker> workerHandler = new WorkerHandler<>();
@@ -22,11 +51,11 @@ public class FileController {
                 try {
                     workerHandler.addWorker(getWorker(line.split(",")));
                 } catch (IllegalArgumentException e) {
-                    System.out.println(e);
+                    logger.warning(e.toString());
                 }
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            logger.severe(e.getMessage());
         }
         return workerHandler;
     }

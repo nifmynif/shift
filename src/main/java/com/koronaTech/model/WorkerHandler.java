@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
@@ -38,6 +40,19 @@ public class WorkerHandler<C extends Worker> {
         return workers.size();
     }
 
+    public void sortByName(boolean order) {
+        workers = workers.stream()
+                .sorted(order ? Comparator.comparing(Worker::getName)
+                        : Comparator.comparing(Worker::getName).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public void sortBySalary(boolean order) {
+        workers = workers.stream()
+                .sorted(order ? Comparator.comparing(Worker::getSalary)
+                        : Comparator.comparing(Worker::getSalary).reversed())
+                .collect(Collectors.toList());
+    }
 
     @Override
     public String toString() {
