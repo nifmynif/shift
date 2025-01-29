@@ -1,50 +1,24 @@
-package com.koronaTech;
+package com.koronaTech.controller;
 
 import com.koronaTech.model.Employee;
 import com.koronaTech.model.Manager;
 import com.koronaTech.model.Worker;
 import com.koronaTech.model.WorkerHandler;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.logging.*;
 
+@Slf4j
 @UtilityClass
 public class FileController {
-    public static final Logger logger = Logger.getLogger(FileController.class.getName());
 
-    static {
-        relog();
-    }
-
-    public static void relog() {
-        try {
-            for (Handler handler : logger.getHandlers()) {
-                handler.close();
-                logger.removeHandler(handler);
-            }
-
-            Files.deleteIfExists(Paths.get("Log.log"));
-
-            FileHandler fileHandler = new FileHandler("Log.log", false);
-            fileHandler.setFormatter(new SimpleFormatter());
-
-            logger.addHandler(fileHandler);
-            logger.setLevel(Level.FINE);
-
-            logger.info("Лог-файл был очищен и переинициализирован.");
-        } catch (Exception e) {
-            logger.severe("Произошла ошибка при конфигурации логгера " + e);
-        }
-    }
-
-    public static WorkerHandler<Worker> readFile(String flePath) throws IOException, IllegalArgumentException {
+    public static WorkerHandler<Worker> readFile(String flePath) throws IOException {
         WorkerHandler<Worker> workerHandler = new WorkerHandler<>();
         checkFile(flePath);
         try (BufferedReader reader = new BufferedReader(new FileReader(flePath))) {
@@ -53,7 +27,7 @@ public class FileController {
                 try {
                     workerHandler.addWorker(getWorker(line.split(",")));
                 } catch (IllegalArgumentException e) {
-                    logger.warning(e.toString());
+                    log.warn(e.toString());
                 }
         }
         return workerHandler;
@@ -95,6 +69,6 @@ public class FileController {
     public static void writeFile(String data, String filePath) throws IOException, IllegalArgumentException {
         checkFile(filePath);
         Files.write(Path.of(filePath), data.getBytes());
-        logger.info("Запись успешно завершена");
+        log.info("Запись успешно завершена");
     }
 }

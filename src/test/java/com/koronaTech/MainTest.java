@@ -13,7 +13,7 @@ class MainTest {
 
     @Test
     void checkArgsTest() {
-        String[] args = {"--sort=name", "--order=asc", "--output=file", "--path=out.txt"};
+        String[] args = {"--input=in.txt", "--sort=name", "--order=asc", "--output=file", "--path=out.txt"};
         Main.checkArgs(args);
         assertEquals("name", AppProperty.sortField);
         assertEquals("asc", AppProperty.sortOrder);
@@ -23,7 +23,7 @@ class MainTest {
 
     @Test
     void checkShortArgsTest() {
-        String[] args = {"-s=salary", "-o=desc", "--output=console"};
+        String[] args = {"--input=in.txt", "-s=salary", "-o=desc", "--output=console"};
         Main.checkArgs(args);
         assertEquals("salary", AppProperty.sortField);
         assertEquals("desc", AppProperty.sortOrder);
@@ -64,6 +64,12 @@ class MainTest {
     @Test
     void nullOutputTypeArgsTest() {
         String[] args = {"--path=out.txt"};
+        assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args));
+    }
+
+    @Test
+    void nullInputArgsTest() {
+        String[] args = {};
         assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args));
     }
 }

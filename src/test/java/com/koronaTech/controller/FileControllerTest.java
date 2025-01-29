@@ -1,4 +1,4 @@
-package com.koronaTech;
+package com.koronaTech.controller;
 
 import com.koronaTech.model.Worker;
 import com.koronaTech.model.WorkerHandler;
@@ -17,8 +17,7 @@ class FileControllerTest {
     @BeforeEach
     public void init() {
         try {
-            workerHandler = FileController.readFile("in.txt");
-            FileController.relog();
+            workerHandler = FileController.readFile("src/test/resources/in.txt");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -26,7 +25,6 @@ class FileControllerTest {
 
     @Test
     void readFileTest() {
-        FileController.logger.info(workerHandler.getReport());
         assertEquals(41, workerHandler.size());
     }
 

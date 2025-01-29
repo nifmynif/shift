@@ -1,10 +1,17 @@
 package com.koronaTech;
 
+import com.koronaTech.controller.AppController;
+
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
 import static com.koronaTech.AppProperty.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+        checkArgs(args);
+        AppController.run();
     }
 
     public static void checkArgs(String[] args) {
@@ -23,6 +30,8 @@ public class Main {
                 outputType = "file";
             } else if (arg.startsWith("--path=")) {
                 outputPath = arg.substring("--path=".length());
+            } else if (arg.startsWith("--input=")) {
+                inputPath = arg.substring("--input=".length());
             } else {
                 throw new IllegalArgumentException("Ошибка: Неверный аргумент - " + arg);
             }
@@ -41,6 +50,9 @@ public class Main {
         }
         if (outputPath != null && !outputType.equals("file")) {
             throw new IllegalArgumentException("Ошибка: Указан путь (--path), но не задан вывод в файл (--output=file).");
+        }
+        if (inputPath == null) {
+            throw new IllegalArgumentException("Ошибка: Не указан входной файл");
         }
     }
 }
