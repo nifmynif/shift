@@ -1,0 +1,46 @@
+  Employee,102, Emily Johnson,3200.75,1    
+  Employee,101, John Doe,3000.00, 0
+ Manager ,8 , Jane Smith , 5000.50 , HR
+Employee,103,Liam Walker,2900.25 ,1
+Employee,  105 , Chris White, 3500.00 , 2 
+Manager,2 , Michael Brown ,6000.00 , Sales
+   Employee,106, Sophia Davis , 3300.00 , 2    
+ Employee,107,James Moore ,   3700.75,0
+Employee,108,Ava Taylor, 3400.25,2
+ Employee ,110, Mia Johnson , 3100.00 ,3  
+Employee , 114 , Amelia Miller ,3450.25,3   
+Manager,  3 , Sarah Wilson ,5500.00 ,IT   
+ Employee,112,  Charlotte Edwards,  3350.75 ,3    
+  Employee , 113 ,Mason Harris ,3000.00,    3
+  Employee,111 ,Lucas Scott , 3250.50,3
+Employee, 116 , Harper Martin,3330.00 ,4  
+Manager, 4 , William Anderson, 5800.00, Marketing 
+   Employee , 119 , Alexander Lewis , 3600.25 ,4
+Employee, 115 , Evelyn Thomas , 3250.00 ,4    
+   Employee,117,Benjamin Hall ,3455.50, 4  
+  Employee,118, Hazel Gonzalez ,  3515.75 ,4   
+ Manager ,1 , Jone Conors , 5050.50 , HR
+  Employee ,123j ,Grace Harris ,3950.75, 5
+  Employee ,1233 ,Grace Harris ,3950k75, 5
+  Employee
+
+ Manager,7 ,Andrew Parker, 5400.00 ,Operations 
+Employee,  132 , Luna Bennett,3400.75 , 7
+   Employee ,130,Aria Wood ,3500.00 ,7  
+ Employee ,134 ,Chloe Turner , 3555.00 ,    7   
+Employee,135,Skylar Hughes,  3500.75,7 
+ Employee,133 ,Henry Lewis ,3450.25 ,7 
+ Employee,  131 ,Leo Collins ,   3600.50 ,7
+Employee, 126, Daniel Young,3000.00 ,6    
+Manager ,6,  Victoria Murphy ,5000.00 ,Design   
+ Employee,128 ,Sebastian Wright, 3200.75 ,6 
+ Employee, 125 , Scarlett Davis , 2900.50 ,6  
+Employee,127,Zoe Harris , 3100.25 ,6    
+Employee,129, Nora King, 3300.50, 6
+Manager,5 ,David Martinez, 6200.00,  Finance    
+Employee, 124 ,Ella Anderson ,3995.00 ,   5
+Employee,122,   Henry Thompson,3850.25,5 
+ Employee,120 ,Jack White ,3750.50 , 5
+Employee, 121, Sofia Clark,-100800.00 , 5
+ Employee ,123 ,Grace Harris ,3950.75, 5
+ Employee ,123 ,Grace Harris ,3950.75, 5
