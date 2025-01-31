@@ -2,14 +2,10 @@ package com.koronaTech;
 
 import com.koronaTech.controller.AppController;
 
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
-
 import static com.koronaTech.AppProperty.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
         checkArgs(args);
         AppController.run();
     }
@@ -52,7 +48,7 @@ public class Main {
             throw new IllegalArgumentException("Ошибка: Указан путь (--path), но не задан вывод в файл (--output=file).");
         }
         if (inputPath == null) {
-            throw new IllegalArgumentException("Ошибка: Не указан входной файл");
+            inputPath = "in.txt";
         }
     }
 }
