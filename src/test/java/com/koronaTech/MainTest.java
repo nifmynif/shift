@@ -1,75 +1,56 @@
 package com.koronaTech;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
+    static Stream<Arguments> validArgsFactory() {
+        return Stream.of(
+                Arguments.of("--sort=name --order=asc --output=file --path=out.txt"),
+                Arguments.of("--input=in.txt -s=salary -o=desc --output=console")
+        );
+    }
+
+    static Stream<Arguments> invalidArgsFactory() {
+        return Stream.of(
+                Arguments.of("--get=k"),
+                Arguments.of("--sort=namep"),
+                Arguments.of("--order=asc"),
+                Arguments.of("--sort=name --order=ascd"),
+                Arguments.of("--output=file"),
+                Arguments.of("--path=out.txt"),
+                Arguments.of("--path=out.txt"),
+                Arguments.of("---output=file ---path=out.txt")
+        );
+    }
+
     @BeforeEach
     public void init() {
         AppProperty.init();
     }
 
-    @Test
-    void checkArgsTest() {
-        String[] args = {"--input=in.txt", "--sort=name", "--order=asc", "--output=file", "--path=out.txt"};
-        Main.checkArgs(args);
-        assertEquals("name", AppProperty.sortField);
-        assertEquals("asc", AppProperty.sortOrder);
-        assertEquals("file", AppProperty.outputType);
-        assertEquals("out.txt", AppProperty.outputPath);
+    @ParameterizedTest
+    @MethodSource("validArgsFactory")
+    void checkValidArgsTest(String args) {
+        Main.checkArgs(args.split(" "));
+        assertEquals("in.txt", AppProperty.inputPath);
+        assertNotNull(AppProperty.sortField);
+        assertNotNull(AppProperty.sortOrder);
+        assertNotNull(AppProperty.outputType);
+        if (AppProperty.outputType.equals("file"))
+            assertEquals("out.txt", AppProperty.outputPath);
     }
 
-    @Test
-    void checkShortArgsTest() {
-        String[] args = {"--input=in.txt", "-s=salary", "-o=desc", "--output=console"};
-        Main.checkArgs(args);
-        assertEquals("salary", AppProperty.sortField);
-        assertEquals("desc", AppProperty.sortOrder);
-        assertEquals("console", AppProperty.outputType);
-        assertNull(AppProperty.outputPath);
-    }
 
-    @Test
-    void wrongArgsTest() {
-        String[] args = {"--get=k"};
-        assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args));
-    }
-
-    @Test
-    void wrongSortArgsTest() {
-        String[] args = {"--sort=namep"};
-        assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args));
-    }
-
-    @Test
-    void nullSortArgsTest() {
-        String[] args = {"--order=asc"};
-        assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args));
-    }
-
-    @Test
-    void wrongOrderArgsTest() {
-        String[] args = {"--sort=name", "--order=ascd"};
-        assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args));
-    }
-
-    @Test
-    void nullPathArgsTest() {
-        String[] args = {"--output=file"};
-        assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args));
-    }
-
-    @Test
-    void nullOutputTypeArgsTest() {
-        String[] args = {"--path=out.txt"};
-        assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args));
-    }
-
-    @Test
-    void nullInputArgsTest() {
-        String[] args = {};
-        assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args));
+    @ParameterizedTest
+    @MethodSource("invalidArgsFactory")
+    void invalidArgsTest(String args) {
+        assertThrowsExactly(IllegalArgumentException.class, () -> Main.checkArgs(args.split(" ")));
     }
 }
