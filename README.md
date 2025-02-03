@@ -11,40 +11,17 @@ Maven 4.0.0
 ## Сторонние библиотеки
 
 ```bash
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.9</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.12</version>
-        </dependency>
+            spring-boot-starter
+            version: 3.4.2
+            
+            lombok
+            version: 1.18.30
+            
+            spring-boot-starter-test
+            version: 3.4.2
+            
+            junit-jupiter
+            version: 5.10.2
 ```
 
 ## Запуск
@@ -59,15 +36,14 @@ Maven 4.0.0
 по имени в прямом порядке и запись в файл упорядоченного по зарплате в обратном порядке
 
 ```bash
-java -Dfile.encoding=UTF-8 -jar shift.jar --sort=name --order=asc --output=file --path=out.txt
-java -Dfile.encoding=UTF-8 -jar shift.jar --input=in.txt --sort=salary --order=desc
+java -jar shift.jar --sort=name --order=asc --output=file --path=out.txt
+java -jar shift.jar --input=in.txt --sort=salary --order=desc
 ```
 
-Строки
+Строка
 
 ```bash
 chcp 65001
--Dfile.encoding=UTF-8
 ```
 
 Предназначены для корректного вывода в консоль
